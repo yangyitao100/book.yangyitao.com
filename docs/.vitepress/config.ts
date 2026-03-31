@@ -6,6 +6,7 @@ export default withMermaid(defineConfig({
   title: 'Open Books',
   description: '开源电子书阅读站',
   lang: 'zh-CN',
+  base: '/book.yangyitao.com/',
   cleanUrls: true,
 
   head: [
