@@ -3,8 +3,8 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 import { sidebar } from './sidebar'
 
 export default withMermaid(defineConfig({
-  title: 'Open Books',
-  description: '开源电子书阅读站',
+  title: '杨艺韬讲堂',
+  description: '高质量技术书籍，免费在线阅读',
   lang: 'zh-CN',
   base: '/',
   cleanUrls: true,
@@ -15,6 +15,9 @@ export default withMermaid(defineConfig({
 
   themeConfig: {
     logo: '/logo.svg',
+    siteTitle: '杨艺韬讲堂',
+    // @ts-ignore — VitePress 支持 logoLink 但类型定义可能未包含
+    logoLink: 'https://www.yangyitao.com',
     nav: [
       { text: '首页', link: '/' },
       {
@@ -64,7 +67,7 @@ export default withMermaid(defineConfig({
 
     footer: {
       message: '基于 VitePress 构建',
-      copyright: 'Copyright © 2024-present',
+      copyright: 'Copyright © 2024-present 杨艺韬',
     },
   },
 

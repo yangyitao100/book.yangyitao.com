@@ -1,8 +1,28 @@
+/* ===== Brand Colors ===== */
 :root {
   --vp-c-brand-1: #646cff;
   --vp-c-brand-2: #535bf2;
   --vp-c-brand-3: #4349e0;
   --vp-c-brand-soft: rgba(100, 108, 255, 0.1);
+
+  /* Homepage custom tokens */
+  --home-bg: #ffffff;
+  --home-card-bg: #ffffff;
+  --home-card-border: rgba(0, 0, 0, 0.06);
+  --home-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06);
+  --home-card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.06), 0 12px 40px rgba(0, 0, 0, 0.1);
+  --home-section-bg: #f8f9fb;
+  --home-text-1: #1a1a2e;
+  --home-text-2: #555770;
+  --home-text-3: #8b8da3;
+  --home-gradient-start: #eef0ff;
+  --home-gradient-end: #f5f0ff;
+  --home-hero-glow: rgba(100, 108, 255, 0.12);
+  --home-tag-bg: rgba(100, 108, 255, 0.08);
+  --home-tag-color: #535bf2;
+  --home-feature-icon-bg: rgba(100, 108, 255, 0.08);
+  --home-testimonial-bg: #ffffff;
+  --home-divider: rgba(0, 0, 0, 0.06);
 }
 
 .dark {
@@ -10,8 +30,71 @@
   --vp-c-brand-2: #646cff;
   --vp-c-brand-3: #535bf2;
   --vp-c-brand-soft: rgba(100, 108, 255, 0.16);
+
+  --home-bg: #0f0f17;
+  --home-card-bg: #18182a;
+  --home-card-border: rgba(255, 255, 255, 0.06);
+  --home-card-shadow: 0 1px 3px rgba(0, 0, 0, 0.2), 0 4px 16px rgba(0, 0, 0, 0.3);
+  --home-card-shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.3), 0 16px 48px rgba(0, 0, 0, 0.4);
+  --home-section-bg: #141422;
+  --home-text-1: #e8e8f0;
+  --home-text-2: #a0a0b8;
+  --home-text-3: #6e6e88;
+  --home-gradient-start: #12122a;
+  --home-gradient-end: #1a1230;
+  --home-hero-glow: rgba(100, 108, 255, 0.15);
+  --home-tag-bg: rgba(116, 123, 255, 0.12);
+  --home-tag-color: #9499ff;
+  --home-feature-icon-bg: rgba(116, 123, 255, 0.12);
+  --home-testimonial-bg: #18182a;
+  --home-divider: rgba(255, 255, 255, 0.06);
 }
 
+/* ===== Hide default VitePress home content ===== */
+.VPHome .VPHero,
+.VPHome .VPFeatures {
+  display: none !important;
+}
+
+/* ===== Doc heading ===== */
 .vp-doc h1 {
   font-size: 28px;
+}
+
+/* ===== Homepage Layout Override ===== */
+.Layout.is-home .VPContent {
+  padding: 0 !important;
+}
+
+.Layout.is-home .VPContent .VPHome {
+  max-width: 100% !important;
+  padding: 0 !important;
+}
+
+/* ===== Global Animations ===== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
