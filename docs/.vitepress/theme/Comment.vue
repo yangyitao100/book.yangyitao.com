@@ -35,9 +35,9 @@ watch(() => route.path, () => {
     <Giscus
       :key="key"
       repo="yangyitao100/book.yangyitao.com"
-      repo-id="REPO_ID_PLACEHOLDER"
+      repo-id="R_kgDORzEgwg"
       category="Announcements"
-      category-id="CATEGORY_ID_PLACEHOLDER"
+      category-id="DIC_kwDORzEgws4C5vjo"
       mapping="pathname"
       strict="0"
       reactions-enabled="1"
