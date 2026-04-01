@@ -1,19 +1,19 @@
 <script setup lang="ts">
 const testimonials = [
   {
-    content: '读完 React18 源码解析后，面试中的源码题再也不怕了。手写 Fiber 那部分让我对调度算法有了全新的理解。',
-    author: '前端工程师',
-    role: '大厂 P7',
+    content: '\u8BFB\u5B8C React18 \u6E90\u7801\u89E3\u6790\u540E\uFF0C\u9762\u8BD5\u4E2D\u7684\u6E90\u7801\u9898\u518D\u4E5F\u4E0D\u6015\u4E86\u3002\u624B\u5199 Fiber \u90A3\u90E8\u5206\u8BA9\u6211\u5BF9\u8C03\u5EA6\u7B97\u6CD5\u6709\u4E86\u5168\u65B0\u7684\u7406\u89E3\u3002',
+    author: '\u524D\u7AEF\u5DE5\u7A0B\u5E08',
+    role: '\u5927\u5382 P7',
   },
   {
-    content: 'Vue3 源码剖析写得非常清晰，从 reactivity 到 compiler 每个模块都讲透了。是我读过最好的 Vue 源码教程。',
-    author: '全栈开发者',
-    role: '创业公司 CTO',
+    content: 'Vue3 \u6E90\u7801\u5256\u6790\u5199\u5F97\u975E\u5E38\u6E05\u6670\uFF0C\u4ECE reactivity \u5230 compiler \u6BCF\u4E2A\u6A21\u5757\u90FD\u8BB2\u900F\u4E86\u3002\u662F\u6211\u8BFB\u8FC7\u6700\u597D\u7684 Vue \u6E90\u7801\u6559\u7A0B\u3002',
+    author: '\u5168\u6808\u5F00\u53D1\u8005',
+    role: '\u521B\u4E1A\u516C\u53F8 CTO',
   },
   {
-    content: '微前端那本帮我在公司成功落地了乾坤方案。能看到源码级的实现细节，比官方文档深入太多了。',
-    author: '架构师',
-    role: '互联网公司',
+    content: '\u5FAE\u524D\u7AEF\u90A3\u672C\u5E2E\u6211\u5728\u516C\u53F8\u6210\u529F\u843D\u5730\u4E86\u4E7E\u5764\u65B9\u6848\u3002\u80FD\u770B\u5230\u6E90\u7801\u7EA7\u7684\u5B9E\u73B0\u7EC6\u8282\uFF0C\u6BD4\u5B98\u65B9\u6587\u6863\u6DF1\u5165\u592A\u591A\u4E86\u3002',
+    author: '\u67B6\u6784\u5E08',
+    role: '\u4E92\u8054\u7F51\u516C\u53F8',
   },
 ]
 </script>
@@ -21,43 +21,28 @@ const testimonials = [
 <template>
   <section class="author-section">
     <div class="author-container">
-      <!-- Author intro -->
-      <div class="author-card">
-        <div class="author-info">
-          <div class="author-avatar">杨</div>
-          <div>
-            <h3 class="author-name">杨艺韬</h3>
-            <p class="author-role">资深前端工程师 · 技术作者</p>
-          </div>
-        </div>
+      <!-- Author -->
+      <div class="author-block">
+        <span class="section-label">ABOUT</span>
+        <h2 class="section-title">\u5173\u4E8E\u4F5C\u8005</h2>
         <p class="author-bio">
-          多年大厂前端开发经验，深耕 React、Vue、微前端等技术栈的源码研究。
-          坚信「理解源码是通往技术自由的必经之路」，致力于将复杂的底层原理用清晰的语言和代码传递给每一位开发者。
+          \u6211\u662F\u6768\u827A\u97EC\uFF0C\u591A\u5E74\u6DF1\u8015\u524D\u7AEF\u6280\u672F\u6808\u6E90\u7801\u7814\u7A76\u3002\u6211\u76F8\u4FE1\u7406\u89E3\u6E90\u7801\u662F\u901A\u5F80\u6280\u672F\u81EA\u7531\u7684\u5FC5\u7ECF\u4E4B\u8DEF\u2014\u2014\u8FD9\u4E9B\u4E66\u7C4D\u662F\u6211\u5C06\u590D\u6742\u7684\u5E95\u5C42\u539F\u7406\u7528\u6E05\u6670\u7684\u8BED\u8A00\u548C\u4EE3\u7801\u4F20\u9012\u7ED9\u6BCF\u4E00\u4F4D\u5F00\u53D1\u8005\u7684\u5C1D\u8BD5\u3002
         </p>
         <div class="author-links">
-          <a href="https://www.yangyitao.com" target="_blank" class="author-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-            个人网站
-          </a>
-          <a href="https://github.com/yangyitao100" target="_blank" class="author-link">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-            GitHub
-          </a>
+          <a href="https://github.com/yangyitao100" target="_blank" class="author-link">GitHub</a>
+          <a href="https://www.yangyitao.com" target="_blank" class="author-link">\u4E2A\u4EBA\u7F51\u7AD9</a>
         </div>
       </div>
 
       <!-- Testimonials -->
-      <div class="section-header">
-        <span class="section-label">读者评价</span>
-        <h2 class="section-title">来自读者的声音</h2>
-      </div>
-      <div class="testimonials-grid">
-        <div v-for="t in testimonials" :key="t.author" class="testimonial-card">
-          <div class="quote-mark">"</div>
-          <p class="testimonial-content">{{ t.content }}</p>
-          <div class="testimonial-author">
-            <span class="testimonial-name">{{ t.author }}</span>
-            <span class="testimonial-role">{{ t.role }}</span>
+      <div class="testimonials">
+        <div v-for="t in testimonials" :key="t.author" class="testimonial">
+          <div class="quote-icon">\u201C</div>
+          <p class="testimonial-text">{{ t.content }}</p>
+          <div class="testimonial-meta">
+            <span class="meta-author">{{ t.author }}</span>
+            <span class="meta-sep">\u00B7</span>
+            <span class="meta-role">{{ t.role }}</span>
           </div>
         </div>
       </div>
@@ -72,174 +57,131 @@ const testimonials = [
 }
 
 .author-container {
-  max-width: 1100px;
+  max-width: 800px;
   margin: 0 auto;
 }
 
-.author-card {
-  background: var(--home-card-bg);
-  border: 1px solid var(--home-card-border);
-  border-radius: 20px;
-  padding: 40px;
-  margin-bottom: 80px;
-  box-shadow: var(--home-card-shadow);
-}
-
-.author-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 20px;
-}
-
-.author-avatar {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-3));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 24px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.author-name {
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--home-text-1);
-  margin: 0;
-}
-
-.author-role {
-  font-size: 14px;
-  color: var(--home-text-3);
-  margin: 4px 0 0;
-}
-
-.author-bio {
-  font-size: 15px;
-  line-height: 1.7;
-  color: var(--home-text-2);
-  margin: 0 0 24px;
-  max-width: 640px;
-}
-
-.author-links {
-  display: flex;
-  gap: 12px;
-}
-
-.author-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--vp-c-brand-1);
-  text-decoration: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  background: var(--home-feature-icon-bg);
-  transition: all 0.2s ease;
-}
-
-.author-link:hover {
-  background: var(--vp-c-brand-1);
-  color: #fff;
-}
-
-.section-header {
+/* Author block — centered, minimal */
+.author-block {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 72px;
 }
 
 .section-label {
   display: inline-block;
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   color: var(--vp-c-brand-1);
   margin-bottom: 12px;
 }
 
 .section-title {
-  font-size: clamp(28px, 4vw, 36px);
+  font-size: clamp(26px, 4vw, 36px);
   font-weight: 800;
   color: var(--home-text-1);
-  margin: 0;
+  margin: 0 0 20px;
   letter-spacing: -0.02em;
 }
 
-.testimonials-grid {
+.author-bio {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--home-text-2);
+  margin: 0 0 24px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.author-links {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.author-link {
+  display: inline-flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+  padding: 6px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--home-tag-border);
+  background: var(--home-tag-bg);
+  transition: all 0.2s var(--ease-out);
+}
+
+.author-link:hover {
+  background: var(--vp-c-brand-1);
+  color: #fff;
+  border-color: var(--vp-c-brand-1);
+}
+
+/* Testimonials */
+.testimonials {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 16px;
 }
 
-.testimonial-card {
-  background: var(--home-testimonial-bg);
+.testimonial {
+  background: var(--home-card-bg);
   border: 1px solid var(--home-card-border);
-  border-radius: 16px;
-  padding: 28px;
-  position: relative;
-  transition: all 0.3s ease;
+  border-radius: 14px;
+  padding: 24px;
+  transition: all 0.25s var(--ease-out);
 }
 
-.testimonial-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--home-card-shadow);
+.testimonial:hover {
+  box-shadow: var(--home-card-shadow-hover);
 }
 
-.quote-mark {
-  font-size: 48px;
+.quote-icon {
+  font-size: 36px;
   font-weight: 800;
   line-height: 1;
   color: var(--vp-c-brand-soft);
+  font-family: Georgia, 'Times New Roman', serif;
   margin-bottom: 8px;
-  font-family: Georgia, serif;
+  user-select: none;
 }
 
-.testimonial-content {
+.testimonial-text {
   font-size: 14px;
   line-height: 1.7;
   color: var(--home-text-2);
-  margin: 0 0 20px;
+  margin: 0 0 16px;
 }
 
-.testimonial-author {
+.testimonial-meta {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  font-size: 13px;
 }
 
-.testimonial-name {
-  font-size: 14px;
+.meta-author {
   font-weight: 600;
   color: var(--home-text-1);
 }
 
-.testimonial-role {
-  font-size: 13px;
+.meta-sep {
   color: var(--home-text-3);
 }
 
-.testimonial-role::before {
-  content: '·';
-  margin-right: 8px;
+.meta-role {
+  color: var(--home-text-3);
 }
 
 @media (max-width: 768px) {
-  .testimonials-grid {
+  .testimonials {
     grid-template-columns: 1fr;
   }
   .author-section {
     padding: 64px 16px;
-  }
-  .author-card {
-    padding: 24px;
   }
 }
 </style>
