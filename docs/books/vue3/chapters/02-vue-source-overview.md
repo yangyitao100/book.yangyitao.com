@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第 2 章 Vue 3 源码全景图
 
 > **本章要点**
@@ -709,3 +711,6 @@ Vapor 模式：@vue/compiler-vapor → template() + effect() → @vue/runtime-va
 4. **横向对比**：React 没有模板编译器——JSX 直接被 Babel 转换为 `React.createElement` 调用。Vue 选择模板 + 编译器的架构在编译期优化方面有什么优势？这种优势的代价是什么？
 
 5. **开放讨论**：Vapor Mode 引入了 `@vue/compiler-vapor` 和 `@vue/runtime-vapor` 两个新包，而不是在现有包中添加 Vapor 支持。请从软件架构的角度分析这个决策的利弊。
+
+
+</div>

@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第10章 工具系统
 
 > *"工具安全的最难问题不是'如何阻止恶意调用'，而是'如何区分一次危险但正确的操作和一次安全但错误的操作'——前者应该放行，后者应该拦截，而 LLM 给你的信号往往不足以可靠区分两者。"*
@@ -604,3 +606,6 @@ chmod +x ~/.openclaw/workspace/tools/disk-usage.sh
 - [Toolformer: Language Models Can Teach Themselves to Use Tools (arXiv 2023)](https://arxiv.org/abs/2302.04761) — LLM 自主学习使用工具的里程碑论文
 - [Anthropic Tool Use 文档](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) — Claude 工具调用的设计理念与最佳实践
 - [Playwright 自动化框架](https://playwright.dev/) — OpenClaw 浏览器自动化的底层依赖，理解其设计有助于理解工具系统
+
+
+</div>

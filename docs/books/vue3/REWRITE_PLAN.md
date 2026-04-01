@@ -67,7 +67,7 @@
 - 8.2 Transform 管线：指令处理（v-if/v-for/v-model）的编译策略
 - 8.3 Codegen：生成 render 函数的代码生成器
 - 8.4 编译缓存与增量编译
-- 8.5 SFC 编译：<script setup> 的魔法背后
+- 8.5 SFC 编译：`<script setup>` 的魔法背后
 
 ### 第9章 Vapor Mode：无虚拟 DOM 的编译目标
 - 9.1 Vapor 的设计动机：为什么要绕过虚拟 DOM

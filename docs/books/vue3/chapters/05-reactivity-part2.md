@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第 5 章 @vue/reactivity 源码深度剖析（下）：effect / effectScope / shallowReactive / readonly
 
 > **本章要点**
@@ -845,3 +847,6 @@ graph TB
 4. **设计分析**：`readonly` 的 `set` trap 在生产环境中不输出警告（`if (__DEV__)`）。如果在生产环境中也强制抛出错误，会有什么问题？为什么 Vue 选择了静默失败？
 
 5. **开放讨论**：`customRef` 将依赖追踪的控制权交给了开发者。这种设计是否违背了 Vue 响应式系统"自动追踪"的核心哲学？在什么情况下，手动控制追踪是必要的？
+
+
+</div>

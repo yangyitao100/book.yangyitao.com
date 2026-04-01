@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第2章 架构总览
 
 > "架构的质量不取决于它能处理多少已知需求，而取决于它面对未知需求时需要修改多少代码。"
@@ -717,3 +719,6 @@ Agent 应该会调用工具获取时间并回复。恭喜——你的第一个 A
 - [The Architecture of Open Source Applications](https://aosabook.org/) — 通过剖析真实开源项目学习系统架构
 - [C4 Model for Software Architecture](https://c4model.com/) — 可视化软件架构的分层方法论，帮助理解本章的架构图
 - [OpenClaw GitHub Wiki](https://github.com/nicepkg/openclaw/wiki) — 社区维护的补充文档与 FAQ
+
+
+</div>

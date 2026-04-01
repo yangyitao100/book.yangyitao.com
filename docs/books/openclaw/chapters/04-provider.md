@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第4章 Provider 抽象层
 
 > "模型供应商的 API 是最不可靠的依赖之一——它的变更不遵循语义版本，它的故障不提前通知，它的限速策略随时可能收紧。你的架构必须假设任何模型都可能在下一秒消失。"
@@ -957,3 +959,6 @@ openclaw gateway restart
 - [OpenAI Cookbook](https://cookbook.openai.com/) — 丰富的 LLM API 使用模式与最佳实践
 - [OpenRouter](https://openrouter.ai/) — 多模型统一 API 网关，Provider 抽象的商业化实现
 - [AI SDK (Vercel)](https://sdk.vercel.ai/) — TypeScript 生态的 AI 模型统一接口库
+
+
+</div>

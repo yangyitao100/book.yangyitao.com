@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第16章 技能系统
 
 > *"上下文窗口是公共牧场——每个技能都想放更多的羊。全量加载 60 个技能消耗 48,000 token，按需加载只需 3,000。这不是优化技巧，而是'公地悲剧'的系统性解法。"*
@@ -821,3 +823,6 @@ openclaw gateway restart
 - [AgentSkills 规范 (OpenClaw)](https://github.com/nicepkg/openclaw) — OpenClaw 技能系统的官方规范文档
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/) — Anthropic 提出的模型上下文协议，与技能系统的知识注入思路有共通之处
 - [Semantic Kernel Skills (Microsoft)](https://learn.microsoft.com/en-us/semantic-kernel/) — 微软的 Agent 技能设计，另一种实现思路
+
+
+</div>

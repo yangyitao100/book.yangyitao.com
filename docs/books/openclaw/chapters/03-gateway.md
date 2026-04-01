@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第3章 Gateway 网关引擎
 
 > "一个系统的成熟度，不看它在正常情况下跑得多好，而看它在凌晨三点、通道断连、模型限速、配置刚改错的情况下能否自愈。"
@@ -977,3 +979,6 @@ curl http://localhost:3000/v1/chat/completions \
 - [Kong Gateway 架构设计](https://docs.konghq.com/gateway/latest/) — 业界成熟的 API 网关架构，可与 OpenClaw Gateway 对比学习
 - [Node.js 事件循环深入理解](https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick) — 理解 Gateway 异步编排的基础
 - [12-Factor App](https://12factor.net/) — 现代应用配置管理与部署的最佳实践
+
+
+</div>

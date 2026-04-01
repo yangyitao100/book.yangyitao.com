@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第8章 通道实现深度剖析
 
 > *"代码中最危险的假设是'这两个平台的行为应该一样'。Telegram 的已读回执是可选的，WhatsApp 的是强制的；Discord 的消息可以编辑，Signal 的不能。每一个'应该'都是一个等待爆炸的 bug。"*
@@ -1030,3 +1032,6 @@ extensions/discord/src/read-only-account-inspect.discord.runtime.ts
 - [Discord Developer Portal](https://discord.com/developers/docs) — Discord API 与 Gateway 协议的完整文档
 - [WhatsApp Business API (Meta)](https://developers.facebook.com/docs/whatsapp/) — WhatsApp 商业 API 的设计约束与能力
 - [Signal Protocol 技术文档](https://signal.org/docs/) — 理解端到端加密对通道实现的深层影响
+
+
+</div>

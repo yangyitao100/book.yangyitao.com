@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第14章 CLI 与交互界面
 
 > *"凌晨两点 SSH 到生产服务器时，CLI 的设计质量就是你的生命线。结构化的诊断输出和五秒内定位问题的能力，比任何花哨的 UI 都更有价值。"*
@@ -793,3 +795,6 @@ CLI 的设计质量决定系统的**可运维性**。Agent 可以在深度学习
 - [Command Line Interface Guidelines](https://clig.dev/) — CLI 设计的现代最佳实践指南
 - [Ink — React for CLI](https://github.com/vadimdemedes/ink) — 用 React 构建终端界面的框架，类似于 OpenClaw TUI 的设计思路
 - [The Art of Unix Programming (Eric Raymond)](http://www.catb.org/~esr/writings/taoup/) — Unix 哲学对 CLI 设计的深远影响
+
+
+</div>

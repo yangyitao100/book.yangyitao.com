@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第 8 章 模板编译深度剖析
 
 > **本章要点**
@@ -166,7 +168,7 @@ function parseChildren(
           node = parseElement(context, ancestors)
         }
       } else if (startsWith(s, context.options.delimiters[0])) {
-        // 插值: {{ msg }}
+        // 插值: { { msg } }
         node = parseInterpolation(context, mode)
       }
     }
@@ -379,7 +381,7 @@ function parseInterpolation(
   context: ParserContext,
   mode: TextModes
 ): InterpolationNode | undefined {
-  const [open, close] = context.options.delimiters  // 默认 ['{{', '}}']
+  const [open, close] = context.options.delimiters  // 默认 ['{ {', '} }']
 
   const closeIndex = context.source.indexOf(close, open.length)
   if (closeIndex === -1) {
@@ -1561,3 +1563,6 @@ function createBlock(type, props, children, patchFlag): VNode {
 4. 静态提升的"字符串化"优化（将多个静态节点合并为 `createStaticVNode`）在什么场景下可能反而降低性能？提示：考虑 SSR hydration 的场景。
 
 5. 假设你要为 Vue 编译器编写一个自定义的 `nodeTransform`，用于在编译期自动为所有 `<img>` 标签添加 `loading="lazy"` 属性——你会如何实现？是在进入阶段还是退出阶段处理？为什么？
+
+
+</div>

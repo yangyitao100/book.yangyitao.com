@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第 4 章 @vue/reactivity 源码深度剖析（上）：reactive / ref / track / trigger / computed
 
 > **本章要点**
@@ -1047,3 +1049,6 @@ function instrumentedSet(this: Map<any, any>, key: unknown, value: unknown) {
 4. **横向对比**：Solid.js 使用函数调用（`count()`）来触发依赖收集，而 Vue 使用属性访问（`count.value`）。从 JavaScript 引擎优化（如 V8 的 hidden class 和 inline cache）的角度分析，哪种方式在运行时性能上可能更优？为什么？
 
 5. **开放讨论**：`checkDirty()` 的渐进式脏检查可能导致深层依赖链的递归遍历。在极端情况下（如 100 层嵌套的 computed），这种递归的栈深度是否会成为问题？如果会，你能想到什么优化方案？
+
+
+</div>

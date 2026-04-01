@@ -13,6 +13,28 @@ export default withMermaid(defineConfig({
     ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
   ],
 
+  vite: {
+    plugins: [
+      {
+        name: 'md-vpre',
+        // 不设 enforce，运行在 vitepress markdown 转换之后、vue 编译之前
+        transform(code: string, id: string) {
+          // VitePress 在内部会对 .md 文件用 vitepress:markdown 插件先转换
+          // 转换后的 id 可能带 .md 后缀，code 已经是 Vue SFC 格式
+          if (!id.includes('.md')) return
+          if (!id.includes('/books/') || id.match(/index\.md/)) return
+          // 给 <template> 内容加 v-pre，阻止 Vue 编译器解析
+          if (code.includes('<template>')) {
+            const newCode = code
+              .replace(/<template>/, '<template><div v-pre>')
+              .replace(/<\/template>/, '</div></template>')
+            return { code: newCode, map: null }
+          }
+        },
+      },
+    ],
+  },
+
   themeConfig: {
     logo: '/logo.svg',
     siteTitle: '杨艺韬讲堂',

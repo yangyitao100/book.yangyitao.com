@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第18章 构建你自己的 Agent 帝国
 
 > *"单 Agent 的天花板不是智能不够，而是上下文不够。200K token 听起来很多，但一次深度代码审查就能吃掉 80K——还没开始回复，预算已经过半。多 Agent 编排的本质，是用进程隔离换上下文空间。"*
@@ -595,3 +597,6 @@ Agent 系统越自主，其失败模式越难预测。
 - [Anthropic 多 Agent 编排模式](https://docs.anthropic.com/en/docs/build-with-claude/agentic) — Anthropic 官方的 Agent 编排最佳实践
 - [Agent Protocol (AI Engineer Foundation)](https://agentprotocol.ai/) — Agent 间通信的开放协议标准
 - [LangGraph (LangChain)](https://langchain-ai.github.io/langgraph/) — 基于图的多 Agent 编排框架，与 OpenClaw 的树形模型形成对比
+
+
+</div>

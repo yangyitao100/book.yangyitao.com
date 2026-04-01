@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第9章 插件与扩展系统
 
 > *"平台的生命周期取决于一个残酷的比率：用户能扩展的能力 ÷ 用户必须 fork 源码的次数。当这个比率趋近于零，平台就死了。"*
@@ -1478,3 +1480,6 @@ AutoGPT 的插件系统经历了两代：
 - [Semantic Kernel Plugins](https://learn.microsoft.com/en-us/semantic-kernel/agents/plugins/) — 微软 Agent 框架的插件设计，另一种思路
 - [OSGi 规范](https://www.osgi.org/) — Java 生态的模块化与插件化标准，插件系统设计的经典参考
 - [Obsidian 插件开发文档](https://docs.obsidian.md/Plugins) — 现代桌面应用插件系统的优秀案例
+
+
+</div>

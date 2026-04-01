@@ -1,3 +1,5 @@
+<div v-pre>
+
 # 第6章 Agent 系统
 
 > "聊天机器人和 Agent 的分界线只有一条：聊天机器人在你说话时才存在，Agent 在你不说话时依然在工作。"
@@ -1412,3 +1414,6 @@ curl http://localhost:3000/v1/chat/completions \
 - [CrewAI 文档](https://docs.crewai.com/) — 多 Agent 协作框架，与 OpenClaw 的 Sub-agent 设计形成有趣对比
 - [Tree of Thoughts: Deliberate Problem Solving with LLMs (arXiv 2023)](https://arxiv.org/abs/2305.10601) — 树形推理结构的学术研究，与 OpenClaw 子 Agent 树结构形成呼应
 - [Microsoft AutoGen](https://github.com/microsoft/autogen) — 微软的多 Agent 对话框架
+
+
+</div>
