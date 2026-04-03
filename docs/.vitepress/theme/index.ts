@@ -20,10 +20,23 @@ function applyBookPageClass() {
   watch(() => route.path, () => nextTick(update))
 }
 
+function trackPageView() {
+  const route = useRoute()
+
+  watch(() => route.path, () => {
+    nextTick(() => {
+      if (typeof window !== 'undefined' && (window as any)._hmt) {
+        ;(window as any)._hmt.push(['_trackPageview', route.path])
+      }
+    })
+  })
+}
+
 export default {
   extends: DefaultTheme,
   Layout() {
     applyBookPageClass()
+    trackPageView()
     return h(DefaultTheme.Layout, null, {
       'doc-after': () => h(Comment),
     })
