@@ -2,43 +2,31 @@ import type { DefaultTheme } from 'vitepress'
 import fs from 'node:fs'
 import path from 'node:path'
 
-function generateReact18Sidebar(): DefaultTheme.SidebarItem[] {
-  const base = path.resolve(__dirname, '../books/react18/chapters')
-  const files = fs.readdirSync(base).filter(f => f.endsWith('.md')).sort()
-  const items: DefaultTheme.SidebarItem[] = [
-    { text: '简介', link: '/books/react18/' },
-    ...files.map(f => {
-      const name = f.replace('.md', '')
-      return { text: name, link: `/books/react18/chapters/${name}` }
-    }),
-  ]
-  return [{ text: 'React 19 内核探秘', items }]
+function extractTitle(filePath: string, fallback: string): string {
+  try {
+    const content = fs.readFileSync(filePath, 'utf-8')
+    const match = content.match(/^#\s+(.+)$/m)
+    if (match) return match[1]
+  } catch {}
+  return fallback
 }
 
-function generateVue3Sidebar(): DefaultTheme.SidebarItem[] {
-  const base = path.resolve(__dirname, '../books/vue3/chapters')
+function generateBookSidebar(
+  bookDir: string,
+  bookName: string,
+  indexLink: string,
+): DefaultTheme.SidebarItem[] {
+  const base = path.resolve(__dirname, `../books/${bookDir}/chapters`)
   const files = fs.readdirSync(base).filter(f => f.endsWith('.md')).sort()
   const items: DefaultTheme.SidebarItem[] = [
-    { text: '简介', link: '/books/vue3/' },
+    { text: '简介', link: indexLink },
     ...files.map(f => {
       const name = f.replace('.md', '')
-      return { text: name, link: `/books/vue3/chapters/${name}` }
+      const title = extractTitle(path.join(base, f), name)
+      return { text: title, link: `/books/${bookDir}/chapters/${name}` }
     }),
   ]
-  return [{ text: 'Vue3源码剖析', items }]
-}
-
-function generateMicrofeSidebar(): DefaultTheme.SidebarItem[] {
-  const base = path.resolve(__dirname, '../books/microfe/chapters')
-  const files = fs.readdirSync(base).filter(f => f.endsWith('.md')).sort()
-  const items: DefaultTheme.SidebarItem[] = [
-    { text: '简介', link: '/books/microfe/' },
-    ...files.map(f => {
-      const name = f.replace('.md', '')
-      return { text: name, link: `/books/microfe/chapters/${name}` }
-    }),
-  ]
-  return [{ text: '微前端源码剖析', items }]
+  return [{ text: bookName, items }]
 }
 
 export const sidebar: DefaultTheme.Sidebar = {
@@ -107,7 +95,7 @@ export const sidebar: DefaultTheme.Sidebar = {
       ],
     },
   ],
-  '/books/react18/': generateReact18Sidebar(),
-  '/books/vue3/': generateVue3Sidebar(),
-  '/books/microfe/': generateMicrofeSidebar(),
+  '/books/react18/': generateBookSidebar('react18', 'React 19 内核探秘', '/books/react18/'),
+  '/books/vue3/': generateBookSidebar('vue3', 'Vue3源码剖析', '/books/vue3/'),
+  '/books/microfe/': generateBookSidebar('microfe', '微前端源码剖析', '/books/microfe/'),
 }
