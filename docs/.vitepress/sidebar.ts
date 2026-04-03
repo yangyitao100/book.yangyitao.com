@@ -4,27 +4,15 @@ import path from 'node:path'
 
 function generateReact18Sidebar(): DefaultTheme.SidebarItem[] {
   const base = path.resolve(__dirname, '../books/react18/chapters')
-  const groups: DefaultTheme.SidebarItem[] = []
-
-  const chapters = fs.readdirSync(base).filter(d =>
-    fs.statSync(path.join(base, d)).isDirectory()
-  ).sort()
-
-  for (const ch of chapters) {
-    const chPath = path.join(base, ch)
-    const files = fs.readdirSync(chPath).filter(f => f.endsWith('.md')).sort()
-    const items: DefaultTheme.SidebarItem[] = files.map(f => {
+  const files = fs.readdirSync(base).filter(f => f.endsWith('.md')).sort()
+  const items: DefaultTheme.SidebarItem[] = [
+    { text: '简介', link: '/books/react18/' },
+    ...files.map(f => {
       const name = f.replace('.md', '')
-      const display = name.includes('.') && /^\d+$/.test(name.split('.')[0])
-        ? name.split('.').slice(1).join('.')
-        : name
-      return { text: display, link: `/books/react18/chapters/${ch}/${name}` }
-    })
-
-    groups.push({ text: ch, collapsed: true, items })
-  }
-
-  return groups
+      return { text: name, link: `/books/react18/chapters/${name}` }
+    }),
+  ]
+  return [{ text: 'React 19 内核探秘', items }]
 }
 
 function generateVue3Sidebar(): DefaultTheme.SidebarItem[] {
