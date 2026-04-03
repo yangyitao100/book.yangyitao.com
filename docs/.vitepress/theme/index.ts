@@ -4,6 +4,7 @@ import { useRoute } from 'vitepress'
 import BookList from './BookList.vue'
 import HomePage from './HomePage.vue'
 import Comment from './Comment.vue'
+import BilibiliPlayer from './BilibiliPlayer.vue'
 import './custom.css'
 
 function applyBookPageClass() {
@@ -30,5 +31,6 @@ export default {
   enhanceApp({ app }) {
     app.component('BookList', BookList)
     app.component('HomePage', HomePage)
+    app.component('BilibiliPlayer', BilibiliPlayer)
   },
 }
