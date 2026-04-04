@@ -1,9 +1,34 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
-  <rect x="15" y="10" width="55" height="75" rx="4" fill="#646cff" opacity="0.9"/>
-  <rect x="30" y="15" width="55" height="75" rx="4" fill="#747bff" opacity="0.7"/>
-  <rect x="35" y="30" width="40" height="3" rx="1.5" fill="white" opacity="0.8"/>
-  <rect x="35" y="40" width="35" height="3" rx="1.5" fill="white" opacity="0.6"/>
-  <rect x="35" y="50" width="40" height="3" rx="1.5" fill="white" opacity="0.8"/>
-  <rect x="35" y="60" width="30" height="3" rx="1.5" fill="white" opacity="0.6"/>
-  <rect x="35" y="70" width="38" height="3" rx="1.5" fill="white" opacity="0.8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <!-- Owl face / speech bubble body -->
+  <path d="M100 38
+           C55 38, 22 68, 22 108
+           C22 135, 35 155, 58 165
+           C58 165, 50 185, 38 192
+           C38 192, 68 188, 82 178
+           C88 180, 94 181, 100 181
+           C145 181, 178 151, 178 108
+           C178 68, 145 38, 100 38Z"
+        fill="none" stroke="#1a1a1a" stroke-width="9" stroke-linejoin="round"/>
+
+  <!-- Graduation cap / eyebrows -->
+  <path d="M30 82 L100 52 L170 82"
+        fill="none" stroke="#1a1a1a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- Left eye ring -->
+  <circle cx="75" cy="110" r="30" fill="none" stroke="#2979FF" stroke-width="8"/>
+  <!-- Right eye ring -->
+  <circle cx="125" cy="110" r="30" fill="none" stroke="#2979FF" stroke-width="8"/>
+
+  <!-- Left pupil -->
+  <circle cx="78" cy="112" r="10" fill="#1a1a1a"/>
+  <!-- Right pupil -->
+  <circle cx="128" cy="112" r="10" fill="#1a1a1a"/>
+
+  <!-- Eye highlight left -->
+  <circle cx="74" cy="108" r="3.5" fill="#fff"/>
+  <!-- Eye highlight right -->
+  <circle cx="124" cy="108" r="3.5" fill="#fff"/>
+
+  <!-- Beak (diamond) -->
+  <path d="M100 118 L106 126 L100 134 L94 126Z" fill="#F4845F"/>
 </svg>
