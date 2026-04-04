@@ -1,6 +1,7 @@
 import DefaultTheme from 'vitepress/theme'
 import { h, onMounted, watch, nextTick } from 'vue'
 import { useRoute } from 'vitepress'
+import LandingPage from './LandingPage.vue'
 import BookList from './BookList.vue'
 import HomePage from './HomePage.vue'
 import Comment from './Comment.vue'
@@ -35,8 +36,15 @@ function trackPageView() {
 export default {
   extends: DefaultTheme,
   Layout() {
+    const route = useRoute()
     applyBookPageClass()
     trackPageView()
+
+    // 首页使用完全独立的布局
+    if (route.path === '/' || route.path === '/index.html') {
+      return h(LandingPage)
+    }
+
     return h(DefaultTheme.Layout, null, {
       'doc-after': () => h(Comment),
     })
