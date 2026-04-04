@@ -1,34 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
-  <!-- Owl face / speech bubble body -->
-  <path d="M100 38
-           C55 38, 22 68, 22 108
-           C22 135, 35 155, 58 165
-           C58 165, 50 185, 38 192
-           C38 192, 68 188, 82 178
-           C88 180, 94 181, 100 181
-           C145 181, 178 151, 178 108
-           C178 68, 145 38, 100 38Z"
-        fill="none" stroke="#1a1a1a" stroke-width="9" stroke-linejoin="round"/>
-
-  <!-- Graduation cap / eyebrows -->
-  <path d="M30 82 L100 52 L170 82"
-        fill="none" stroke="#1a1a1a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-
-  <!-- Left eye ring -->
-  <circle cx="75" cy="110" r="30" fill="none" stroke="#2979FF" stroke-width="8"/>
-  <!-- Right eye ring -->
-  <circle cx="125" cy="110" r="30" fill="none" stroke="#2979FF" stroke-width="8"/>
-
-  <!-- Left pupil -->
-  <circle cx="78" cy="112" r="10" fill="#1a1a1a"/>
-  <!-- Right pupil -->
-  <circle cx="128" cy="112" r="10" fill="#1a1a1a"/>
-
-  <!-- Eye highlight left -->
-  <circle cx="74" cy="108" r="3.5" fill="#fff"/>
-  <!-- Eye highlight right -->
-  <circle cx="124" cy="108" r="3.5" fill="#fff"/>
-
-  <!-- Beak (diamond) -->
-  <path d="M100 118 L106 126 L100 134 L94 126Z" fill="#F4845F"/>
+  <!-- Ear tufts -->
+  <path d="M54 60 L64 24" stroke="#1a1a1a" stroke-width="10" stroke-linecap="round"/>
+  <path d="M146 60 L136 24" stroke="#1a1a1a" stroke-width="10" stroke-linecap="round"/>
+  <!-- Head -->
+  <rect x="30" y="52" width="140" height="128" rx="52" fill="none" stroke="#1a1a1a" stroke-width="8"/>
+  <!-- Eyes -->
+  <circle cx="74" cy="108" r="28" fill="#3b82f6"/>
+  <circle cx="126" cy="108" r="28" fill="#3b82f6"/>
+  <!-- Eye highlights -->
+  <circle cx="82" cy="100" r="9" fill="#fff"/>
+  <circle cx="134" cy="100" r="9" fill="#fff"/>
+  <!-- Beak -->
+  <path d="M100 130 L108 146 L92 146Z" fill="#F4845F"/>
 </svg>

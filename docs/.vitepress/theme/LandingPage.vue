@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import { useData } from 'vitepress'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
-const { isDark } = useData()
-
+const isDark = ref(false)
 const scrolled = ref(false)
 const mobileMenuOpen = ref(false)
 
@@ -12,16 +10,42 @@ function onScroll() {
 }
 
 function toggleDark() {
-  isDark.value = !isDark.value
+  const el = document.documentElement
+  el.classList.toggle('dark')
+  isDark.value = el.classList.contains('dark')
+  try {
+    localStorage.setItem('vitepress-theme-appearance', isDark.value ? 'dark' : 'light')
+  } catch {}
+}
+
+/* ---- Scroll-triggered reveal ---- */
+let observer: IntersectionObserver | null = null
+
+function initReveal() {
+  observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible')
+          observer?.unobserve(e.target)
+        }
+      })
+    },
+    { threshold: 0.12 }
+  )
+  document.querySelectorAll('.reveal').forEach((el) => observer?.observe(el))
 }
 
 onMounted(() => {
+  isDark.value = document.documentElement.classList.contains('dark')
   window.addEventListener('scroll', onScroll, { passive: true })
   onScroll()
+  nextTick(initReveal)
 })
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
+  observer?.disconnect()
 })
 
 const books = [
@@ -31,7 +55,6 @@ const books = [
     link: '/books/react18/',
     chapters: 19,
     icon: 'R',
-    color: '#3b82f6',
     gradient: 'linear-gradient(135deg, #1e3a5f, #2563eb)',
     tags: ['React', 'Fiber', '并发模式'],
   },
@@ -41,7 +64,6 @@ const books = [
     link: '/books/vue3/',
     chapters: 25,
     icon: 'V',
-    color: '#10b981',
     gradient: 'linear-gradient(135deg, #064e3b, #059669)',
     tags: ['Vue3', '响应式', '编译器'],
   },
@@ -51,7 +73,6 @@ const books = [
     link: '/books/microfe/',
     chapters: 18,
     icon: 'M',
-    color: '#f59e0b',
     gradient: 'linear-gradient(135deg, #78350f, #d97706)',
     tags: ['微前端', '乾坤', 'JS沙箱'],
   },
@@ -61,37 +82,21 @@ const books = [
     link: '/books/openclaw/',
     chapters: 18,
     icon: 'O',
-    color: '#8b5cf6',
     gradient: 'linear-gradient(135deg, #312e81, #7c3aed)',
     tags: ['AI Agent', '架构', 'Gateway'],
   },
 ]
 
-const features = [
-  { title: '源码级深度', desc: '每一章都从源码切入，逐行分析核心实现，不止于 API 用法。', icon: 'depth' },
-  { title: '架构思维', desc: '从整体设计到模块拆分，帮你建立系统化的架构认知。', icon: 'arch' },
-  { title: '手写实践', desc: '配套手写实现，从零构建简化版框架，真正掌握核心原理。', icon: 'code' },
-  { title: '完全免费', desc: '所有内容开源免费，持续更新迭代，无任何付费门槛。', icon: 'free' },
-  { title: '移动适配', desc: '响应式设计，暗色模式，全文搜索，任何设备舒适阅读。', icon: 'mobile' },
-  { title: '持续更新', desc: '紧跟技术前沿，内容定期迭代，确保知识不过时。', icon: 'update' },
+const featuresMain = [
+  { title: '源码级深度', desc: '每一章都从源码切入，逐行分析核心实现，不止于 API 用法。带你看到框架作者的设计意图与工程权衡。', icon: 'depth' },
+  { title: '架构思维', desc: '从整体设计到模块拆分，帮你建立系统化的架构认知。读完后能独立分析任何框架的内部结构。', icon: 'arch' },
 ]
 
-const testimonials = [
-  {
-    text: '读完 React18 源码解析后，面试中的源码题再也不怕了。手写 Fiber 那部分让我对调度算法有了全新的理解。',
-    name: '前端工程师',
-    role: '大厂 P7',
-  },
-  {
-    text: 'Vue3 源码剖析写得非常清晰，从 reactivity 到 compiler 每个模块都讲透了。是我读过最好的 Vue 源码教程。',
-    name: '全栈开发者',
-    role: '创业公司 CTO',
-  },
-  {
-    text: '微前端那本帮我在公司成功落地了乾坤方案。能看到源码级的实现细节，比官方文档深入太多了。',
-    name: '架构师',
-    role: '互联网公司',
-  },
+const featuresSub = [
+  { title: '手写实践', desc: '配套手写实现，从零构建简化版框架。', icon: 'code' },
+  { title: '完全免费', desc: '所有内容开源免费，无任何付费门槛。', icon: 'free' },
+  { title: '极致体验', desc: '暗色模式、全文搜索，任何设备舒适阅读。', icon: 'mobile' },
+  { title: '持续更新', desc: '紧跟技术前沿，内容定期迭代更新。', icon: 'update' },
 ]
 </script>
 
@@ -101,7 +106,16 @@ const testimonials = [
     <nav class="nav" :class="{ scrolled }">
       <div class="nav-inner">
         <a href="/" class="nav-brand">
-          <img src="/logo.svg" alt="logo" class="nav-logo" />
+          <svg class="nav-logo" viewBox="0 0 200 200" aria-label="logo">
+            <path d="M54 60 L64 24" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+            <path d="M146 60 L136 24" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+            <rect x="30" y="52" width="140" height="128" rx="52" fill="none" stroke="currentColor" stroke-width="8"/>
+            <circle cx="74" cy="108" r="28" fill="#3b82f6"/>
+            <circle cx="126" cy="108" r="28" fill="#3b82f6"/>
+            <circle cx="82" cy="100" r="9" fill="#fff"/>
+            <circle cx="134" cy="100" r="9" fill="#fff"/>
+            <path d="M100 130 L108 146 L92 146Z" fill="#F4845F"/>
+          </svg>
           <span class="nav-name">杨艺韬讲堂</span>
         </a>
 
@@ -139,8 +153,8 @@ const testimonials = [
           开源免费 · 持续更新中
         </div>
         <h1 class="hero-title">
-          <span class="hero-title-main">深入源码内核</span>
-          <span class="hero-title-accent">构建底层认知</span>
+          <span class="hero-title-main">专注于原理源码</span>
+          <span class="hero-title-accent">深入技术本质</span>
         </h1>
         <p class="hero-desc">
           四本技术专著，从 React、Vue、微前端到 AI Agent<br class="hide-mobile" />
@@ -173,21 +187,41 @@ const testimonials = [
           </a>
         </div>
       </div>
+      <!-- Curved divider -->
+      <div class="hero-divider">
+        <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+          <path d="M0,80 C360,0 1080,0 1440,80 L1440,80 L0,80 Z" fill="var(--home-bg)"/>
+        </svg>
+      </div>
     </section>
 
     <!-- ========== BOOKS ========== -->
     <section id="books" class="section books">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="section-tag">BOOKS</span>
           <h2 class="section-title">四本深度技术专著</h2>
           <p class="section-subtitle">每一本都从源码出发，带你构建对技术底层的完整认知</p>
         </div>
         <div class="book-grid">
-          <a v-for="b in books" :key="b.title" :href="b.link" class="book-card">
+          <a v-for="(b, i) in books" :key="b.title" :href="b.link" class="book-card reveal" :style="{ transitionDelay: i * 80 + 'ms' }">
             <div class="book-visual" :style="{ background: b.gradient }">
-              <span class="book-icon">{{ b.icon }}</span>
-              <span class="book-badge">{{ b.chapters }} 章</span>
+              <!-- Decorative pattern -->
+              <svg class="book-pattern" viewBox="0 0 200 120" preserveAspectRatio="xMidYMid slice">
+                <circle cx="160" cy="20" r="40" fill="rgba(255,255,255,0.04)"/>
+                <circle cx="180" cy="90" r="60" fill="rgba(255,255,255,0.03)"/>
+                <circle cx="30" cy="100" r="30" fill="rgba(255,255,255,0.03)"/>
+                <line x1="20" y1="10" x2="80" y2="40" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+                <line x1="120" y1="15" x2="170" y2="60" stroke="rgba(255,255,255,0.06)" stroke-width="0.5"/>
+                <line x1="60" y1="80" x2="140" y2="50" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+              </svg>
+              <div class="book-visual-content">
+                <span class="book-icon">{{ b.icon }}</span>
+                <div class="book-visual-meta">
+                  <span class="book-visual-title">{{ b.title }}</span>
+                  <span class="book-badge">{{ b.chapters }} 章</span>
+                </div>
+              </div>
             </div>
             <div class="book-body">
               <h3 class="book-title">{{ b.title }}</h3>
@@ -209,45 +243,36 @@ const testimonials = [
     <!-- ========== FEATURES ========== -->
     <section id="features" class="section features">
       <div class="container">
-        <div class="section-head">
+        <div class="section-head reveal">
           <span class="section-tag">WHY US</span>
           <h2 class="section-title">为什么选择这里</h2>
           <p class="section-subtitle">我们追求技术内容的深度与品质</p>
         </div>
-        <div class="feature-grid">
-          <div v-for="f in features" :key="f.title" class="feature-card">
+
+        <!-- Main features — large cards -->
+        <div class="feature-main-grid">
+          <div v-for="(f, i) in featuresMain" :key="f.title" class="feature-card feature-card--lg reveal" :style="{ transitionDelay: i * 100 + 'ms' }">
             <div class="feature-icon" :class="'fi-' + f.icon">
-              <svg v-if="f.icon === 'depth'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
-              <svg v-if="f.icon === 'arch'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
-              <svg v-if="f.icon === 'code'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              <svg v-if="f.icon === 'free'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
-              <svg v-if="f.icon === 'mobile'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
-              <svg v-if="f.icon === 'update'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              <svg v-if="f.icon === 'depth'" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
+              <svg v-if="f.icon === 'arch'" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
             </div>
             <h3 class="feature-title">{{ f.title }}</h3>
             <p class="feature-desc">{{ f.desc }}</p>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ========== TESTIMONIALS ========== -->
-    <section class="section testimonials-section">
-      <div class="container">
-        <div class="section-head">
-          <span class="section-tag">REVIEWS</span>
-          <h2 class="section-title">读者评价</h2>
-        </div>
-        <div class="testimonial-grid">
-          <div v-for="t in testimonials" :key="t.name" class="testimonial-card">
-            <div class="tq">"</div>
-            <p class="t-text">{{ t.text }}</p>
-            <div class="t-author">
-              <div class="t-avatar">{{ t.name[0] }}</div>
-              <div>
-                <div class="t-name">{{ t.name }}</div>
-                <div class="t-role">{{ t.role }}</div>
-              </div>
+        <!-- Sub features — smaller cards -->
+        <div class="feature-sub-grid">
+          <div v-for="(f, i) in featuresSub" :key="f.title" class="feature-card feature-card--sm reveal" :style="{ transitionDelay: (i * 80 + 200) + 'ms' }">
+            <div class="feature-icon" :class="'fi-' + f.icon">
+              <svg v-if="f.icon === 'code'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+              <svg v-if="f.icon === 'free'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+              <svg v-if="f.icon === 'mobile'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/></svg>
+              <svg v-if="f.icon === 'update'" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+            </div>
+            <div>
+              <h3 class="feature-title">{{ f.title }}</h3>
+              <p class="feature-desc">{{ f.desc }}</p>
             </div>
           </div>
         </div>
@@ -255,39 +280,36 @@ const testimonials = [
     </section>
 
     <!-- ========== AUTHOR ========== -->
-    <section id="author" class="section author">
+    <section id="author" class="section author-section">
       <div class="container">
-        <div class="author-card">
+        <div class="author-card reveal">
+          <img
+            src="https://github.com/yangyitao100.png"
+            alt="杨艺韬"
+            class="author-avatar"
+            loading="lazy"
+          />
           <div class="author-info">
-            <h2 class="author-title">关于作者</h2>
+            <h2 class="author-name">杨艺韬</h2>
+            <p class="author-role">软件源码研究者 · 开源作者</p>
             <p class="author-bio">
-              我是杨艺韬，多年深耕前端技术栈源码研究。我相信理解源码是通往技术自由的必经之路——这些书籍是我将复杂的底层原理用清晰的语言和代码传递给每一位开发者的尝试。
+              我相信理解源码是通往技术自由的必经之路——这些作品是我将复杂的底层原理用清晰的语言和代码传递给每一位开发者的尝试。
             </p>
             <div class="author-links">
               <a href="https://github.com/yangyitao100" target="_blank" class="author-link">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 GitHub
               </a>
-              <a href="https://www.yangyitao.com" target="_blank" class="author-link">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                个人网站
+              <a href="https://space.bilibili.com/613231762" target="_blank" class="author-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373z"/></svg>
+                B站
               </a>
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== CTA ========== -->
-    <section class="section cta-section">
-      <div class="container">
-        <div class="cta-card">
-          <h2 class="cta-title">准备好深入源码了吗？</h2>
-          <p class="cta-desc">选择一本感兴趣的书，开始你的源码探索之旅</p>
-          <a href="#books" class="cta-primary">
-            开始阅读
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 17 5-5-5-5"/><path d="m13 17 5-5-5-5"/></svg>
-          </a>
+          <div class="author-wechat">
+            <img src="/wechat-qr.jpg" alt="微信公众号" class="author-qr" loading="lazy" />
+            <span class="author-qr-label">微信公众号</span>
+          </div>
         </div>
       </div>
     </section>
@@ -295,12 +317,36 @@ const testimonials = [
     <!-- ========== FOOTER ========== -->
     <footer class="footer">
       <div class="footer-inner">
-        <div class="footer-brand">
-          <img src="/logo.svg" alt="logo" class="footer-logo" />
-          <span>杨艺韬讲堂</span>
+        <div class="footer-left">
+          <div class="footer-brand">
+            <svg class="footer-logo" viewBox="0 0 200 200" aria-label="logo">
+              <path d="M54 60 L64 24" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+              <path d="M146 60 L136 24" stroke="currentColor" stroke-width="10" stroke-linecap="round"/>
+              <rect x="30" y="52" width="140" height="128" rx="52" fill="none" stroke="currentColor" stroke-width="8"/>
+              <circle cx="74" cy="108" r="28" fill="#3b82f6"/>
+              <circle cx="126" cy="108" r="28" fill="#3b82f6"/>
+              <circle cx="82" cy="100" r="9" fill="#fff"/>
+              <circle cx="134" cy="100" r="9" fill="#fff"/>
+              <path d="M100 130 L108 146 L92 146Z" fill="#F4845F"/>
+            </svg>
+            <span>杨艺韬讲堂</span>
+          </div>
+          <div class="footer-copy">
+            Copyright &copy; 2024–present 杨艺韬
+          </div>
+          <div class="footer-filing">
+            <a href="https://beian.miit.gov.cn" target="_blank" rel="noopener" class="filing-link">蜀ICP备2023033985号-3</a>
+            <a href="https://beian.mps.gov.cn/#/query/webSearch?code=51019002007300" target="_blank" rel="noopener" class="filing-link">川公网安备51019002007300</a>
+          </div>
         </div>
-        <div class="footer-copy">
-          Copyright &copy; 2024–present 杨艺韬
+        <div class="footer-books">
+          <span class="footer-heading">书籍</span>
+          <a v-for="b in books" :key="b.title" :href="b.link" class="footer-book-link">{{ b.title }}</a>
+        </div>
+        <div class="footer-links-col">
+          <span class="footer-heading">链接</span>
+          <a href="https://github.com/yangyitao100" target="_blank" class="footer-book-link">GitHub</a>
+          <a href="https://space.bilibili.com/613231762" target="_blank" class="footer-book-link">B站</a>
         </div>
       </div>
     </footer>
@@ -321,6 +367,18 @@ const testimonials = [
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* ===== Scroll reveal ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ===== NAV ===== */
@@ -362,8 +420,8 @@ const testimonials = [
 }
 
 .nav-logo {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
 }
 
 .nav-name {
@@ -374,21 +432,24 @@ const testimonials = [
   color: var(--home-text-1);
 }
 
-/* nav not scrolled on dark hero background */
 .nav:not(.scrolled) .nav-brand {
-  color: #e2e8f0;
+  color: var(--hero-nav-brand);
 }
 
 .nav:not(.scrolled) .nav-link {
-  color: rgba(203, 213, 225, 0.8);
+  color: var(--hero-nav-link);
 }
 
 .nav:not(.scrolled) .nav-link:hover {
-  color: #fff;
+  color: var(--hero-nav-link-hover);
 }
 
 .nav:not(.scrolled) .theme-toggle {
-  color: rgba(203, 213, 225, 0.8);
+  color: var(--hero-nav-icon);
+}
+
+.nav:not(.scrolled) .mobile-menu-btn {
+  color: var(--hero-nav-icon);
 }
 
 .nav-links {
@@ -461,15 +522,15 @@ const testimonials = [
 .hero-bg {
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, #070a14 0%, #0f172a 40%, #0c1220 100%);
+  background: var(--hero-bg);
 }
 
 .hero-grid {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(148, 163, 184, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.04) 1px, transparent 1px);
+    linear-gradient(var(--hero-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--hero-grid-line) 1px, transparent 1px);
   background-size: 64px 64px;
   mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 20%, transparent 100%);
 }
@@ -484,7 +545,7 @@ const testimonials = [
 .hero-orb-1 {
   width: 700px;
   height: 700px;
-  background: rgba(59, 130, 246, 0.08);
+  background: var(--hero-orb-1);
   top: -250px;
   right: -150px;
   animation: float 8s ease-in-out infinite;
@@ -493,7 +554,7 @@ const testimonials = [
 .hero-orb-2 {
   width: 500px;
   height: 500px;
-  background: rgba(139, 92, 246, 0.06);
+  background: var(--hero-orb-2);
   bottom: -200px;
   left: -100px;
   animation: float 10s ease-in-out infinite reverse;
@@ -502,7 +563,7 @@ const testimonials = [
 .hero-orb-3 {
   width: 300px;
   height: 300px;
-  background: rgba(16, 185, 129, 0.05);
+  background: var(--hero-orb-3);
   top: 40%;
   left: 50%;
   animation: float 12s ease-in-out infinite;
@@ -527,6 +588,22 @@ const testimonials = [
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Curved divider */
+.hero-divider {
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  line-height: 0;
+}
+
+.hero-divider svg {
+  width: 100%;
+  height: 60px;
+  display: block;
+}
+
 .hero-badge {
   display: inline-flex;
   align-items: center;
@@ -535,9 +612,9 @@ const testimonials = [
   border-radius: 100px;
   font-size: 13px;
   font-weight: 500;
-  color: rgba(203, 213, 225, 0.8);
-  border: 1px solid rgba(148, 163, 184, 0.1);
-  background: rgba(148, 163, 184, 0.04);
+  color: var(--hero-badge-color);
+  border: 1px solid var(--hero-badge-border);
+  background: var(--hero-badge-bg);
   margin-bottom: 40px;
 }
 
@@ -545,8 +622,8 @@ const testimonials = [
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
+  background: var(--hero-pulse);
+  box-shadow: 0 0 10px var(--hero-pulse-shadow);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -569,14 +646,14 @@ const testimonials = [
 }
 
 .hero-title-main {
-  background: linear-gradient(135deg, #f1f5f9 0%, #94a3b8 100%);
+  background: linear-gradient(135deg, var(--hero-title-main-from) 0%, var(--hero-title-main-to) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .hero-title-accent {
-  background: linear-gradient(135deg, #60a5fa 0%, #a78bfa 60%, #f472b6 100%);
+  background: linear-gradient(135deg, var(--hero-title-accent-from) 0%, var(--hero-title-accent-mid) 60%, var(--hero-title-accent-to) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -584,7 +661,7 @@ const testimonials = [
 
 .hero-desc {
   font-size: clamp(15px, 2vw, 18px);
-  color: rgba(148, 163, 184, 0.65);
+  color: var(--hero-desc);
   line-height: 1.75;
   margin: 0 0 40px;
 }
@@ -607,19 +684,19 @@ const testimonials = [
 .hero-stat-num {
   font-size: 30px;
   font-weight: 800;
-  color: #fff;
+  color: var(--hero-stat-num);
   font-variant-numeric: tabular-nums;
 }
 
 .hero-stat-label {
   font-size: 13px;
-  color: rgba(148, 163, 184, 0.5);
+  color: var(--hero-stat-label);
 }
 
 .hero-stat-sep {
   width: 1px;
   height: 40px;
-  background: rgba(148, 163, 184, 0.1);
+  background: var(--hero-stat-sep);
 }
 
 .hero-cta {
@@ -657,15 +734,15 @@ const testimonials = [
   font-size: 15px;
   font-weight: 600;
   text-decoration: none;
-  color: rgba(203, 213, 225, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  background: rgba(148, 163, 184, 0.04);
+  color: var(--hero-ghost-color);
+  border: 1px solid var(--hero-ghost-border);
+  background: var(--hero-ghost-bg);
   transition: all 0.25s ease;
 }
 
 .cta-ghost:hover {
-  border-color: rgba(148, 163, 184, 0.3);
-  background: rgba(148, 163, 184, 0.08);
+  border-color: var(--hero-ghost-hover-border);
+  background: var(--hero-ghost-hover-bg);
 }
 
 /* ===== SECTIONS ===== */
@@ -732,34 +809,65 @@ const testimonials = [
 
 .book-visual {
   position: relative;
-  padding: 32px 24px;
+  padding: 40px 28px;
+  overflow: hidden;
+}
+
+.book-pattern {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.book-visual-content {
+  position: relative;
+  z-index: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
+  gap: 16px;
 }
 
 .book-icon {
-  width: 52px;
-  height: 52px;
+  width: 60px;
+  height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 900;
   color: #fff;
   background: rgba(255, 255, 255, 0.15);
-  border-radius: 14px;
+  border-radius: 16px;
   backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.book-visual-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.book-visual-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.02em;
 }
 
 .book-badge {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.85);
-  padding: 4px 14px;
+  color: rgba(255, 255, 255, 0.8);
+  padding: 3px 12px;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .book-body {
@@ -829,14 +937,20 @@ const testimonials = [
   background: var(--home-bg-alt);
 }
 
-.feature-grid {
+.feature-main-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.feature-sub-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
 
 .feature-card {
-  padding: 28px 24px;
   background: var(--home-card-bg);
   border: 1px solid var(--home-card-border);
   border-radius: 14px;
@@ -846,6 +960,43 @@ const testimonials = [
 .feature-card:hover {
   box-shadow: var(--home-card-shadow-hover);
   transform: translateY(-2px);
+}
+
+.feature-card--lg {
+  padding: 36px 32px;
+}
+
+.feature-card--lg .feature-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.feature-card--lg .feature-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.feature-card--lg .feature-desc {
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.feature-card--sm {
+  padding: 24px 20px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.feature-card--sm .feature-icon {
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.feature-card--sm .feature-title {
+  margin-bottom: 4px;
 }
 
 .feature-icon {
@@ -879,115 +1030,58 @@ const testimonials = [
   margin: 0;
 }
 
-/* ===== TESTIMONIALS ===== */
-.testimonials-section {
+/* ===== AUTHOR ===== */
+.author-section {
   background: var(--home-bg);
 }
 
-.testimonial-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.testimonial-card {
-  background: var(--home-card-bg);
-  border: 1px solid var(--home-card-border);
-  border-radius: 16px;
-  padding: 28px 24px;
+.author-card {
   display: flex;
-  flex-direction: column;
-  transition: all 0.25s ease;
+  align-items: center;
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.testimonial-card:hover {
+.author-avatar {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 3px solid var(--home-card-border);
   box-shadow: var(--home-card-shadow-hover);
-  transform: translateY(-2px);
 }
 
-.tq {
-  font-size: 40px;
-  font-weight: 800;
-  line-height: 1;
-  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-3));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-family: Georgia, serif;
-  margin-bottom: 12px;
-  user-select: none;
-}
-
-.t-text {
-  font-size: 14px;
-  line-height: 1.75;
-  color: var(--home-text-2);
-  margin: 0 0 20px;
+.author-info {
   flex: 1;
 }
 
-.t-author {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.t-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: 700;
-  color: #fff;
-  background: linear-gradient(135deg, var(--vp-c-brand-1), var(--vp-c-brand-3));
-  flex-shrink: 0;
-}
-
-.t-name {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--home-text-1);
-}
-
-.t-role {
-  font-size: 12px;
-  color: var(--home-text-3);
-  margin-top: 1px;
-}
-
-/* ===== AUTHOR ===== */
-.author {
-  background: var(--home-bg-alt);
-}
-
-.author-card {
-  max-width: 640px;
-  margin: 0 auto;
-  text-align: center;
-}
-
-.author-title {
-  font-size: clamp(28px, 4vw, 38px);
+.author-name {
+  font-size: 28px;
   font-weight: 800;
   color: var(--home-text-1);
-  margin: 0 0 20px;
+  margin: 0 0 6px;
   letter-spacing: -0.02em;
 }
 
+.author-role {
+  font-size: 14px;
+  color: var(--vp-c-brand-1);
+  font-weight: 600;
+  margin: 0 0 16px;
+}
+
 .author-bio {
-  font-size: 16px;
-  line-height: 1.85;
+  font-size: 15px;
+  line-height: 1.8;
   color: var(--home-text-2);
-  margin: 0 0 28px;
+  margin: 0 0 24px;
 }
 
 .author-links {
   display: flex;
   gap: 12px;
-  justify-content: center;
 }
 
 .author-link {
@@ -1011,64 +1105,47 @@ const testimonials = [
   border-color: var(--vp-c-brand-1);
 }
 
-/* ===== CTA ===== */
-.cta-section {
-  background: var(--home-bg);
-  padding: 80px 0 100px;
+.author-wechat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
-.cta-card {
-  text-align: center;
-  padding: 64px 40px;
-  border-radius: 24px;
-  background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
-  border: 1px solid rgba(148, 163, 184, 0.08);
-  position: relative;
-  overflow: hidden;
+.author-qr {
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  border: 1px solid var(--home-card-border);
+  box-shadow: var(--home-card-shadow);
 }
 
-.cta-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 30% 50%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
-              radial-gradient(circle at 70% 50%, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
-  pointer-events: none;
-}
-
-.cta-title {
-  font-size: clamp(24px, 3.5vw, 34px);
-  font-weight: 800;
-  color: #f1f5f9;
-  margin: 0 0 12px;
-  position: relative;
-  letter-spacing: -0.02em;
-}
-
-.cta-desc {
-  font-size: 16px;
-  color: rgba(148, 163, 184, 0.7);
-  margin: 0 0 32px;
-  position: relative;
-}
-
-.cta-section .cta-primary {
-  position: relative;
+.author-qr-label {
+  font-size: 12px;
+  color: var(--home-text-3);
 }
 
 /* ===== FOOTER ===== */
 .footer {
-  padding: 32px 24px;
+  padding: 48px 24px 36px;
   border-top: 1px solid var(--home-card-border);
-  background: var(--home-bg);
+  background: var(--home-bg-alt);
 }
 
 .footer-inner {
   max-width: 1080px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 48px;
+  align-items: start;
+}
+
+.footer-left {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .footer-brand {
@@ -1081,13 +1158,58 @@ const testimonials = [
 }
 
 .footer-logo {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
 }
 
 .footer-copy {
   font-size: 13px;
   color: var(--home-text-3);
+}
+
+.footer-heading {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--home-text-3);
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.footer-books,
+.footer-links-col {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-book-link {
+  font-size: 14px;
+  color: var(--home-text-2);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-book-link:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.footer-filing {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filing-link {
+  font-size: 12px;
+  color: var(--home-text-3);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.filing-link:hover {
+  color: var(--home-text-2);
 }
 
 /* ===== MOBILE ===== */
@@ -1109,7 +1231,7 @@ const testimonials = [
     border-bottom: 1px solid var(--home-card-border);
   }
 
-  .nav:not(.scrolled) .nav-links {
+  .is-dark .nav:not(.scrolled) .nav-links {
     background: rgba(15, 23, 42, 0.95);
   }
 
@@ -1130,22 +1252,49 @@ const testimonials = [
   .section { padding: 64px 0; }
 
   .book-grid { grid-template-columns: 1fr; }
-  .feature-grid { grid-template-columns: 1fr; }
-  .testimonial-grid { grid-template-columns: 1fr; }
+  .feature-main-grid { grid-template-columns: 1fr; }
+  .feature-sub-grid { grid-template-columns: 1fr; }
+  .feature-card--sm { flex-direction: row; }
+
+  .author-card {
+    flex-direction: column;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .author-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+
+  .author-links {
+    justify-content: center;
+  }
 
   .hide-mobile { display: none; }
 
-  .footer-inner { flex-direction: column; gap: 12px; text-align: center; }
+  .footer-inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    text-align: center;
+  }
 
-  .cta-card { padding: 48px 24px; }
+  .footer-left { align-items: center; }
+
+  .footer-books,
+  .footer-links-col {
+    align-items: center;
+  }
 }
 
 @media (min-width: 769px) and (max-width: 1024px) {
-  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-main-grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-sub-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 /* ===== Smooth scroll ===== */
-.landing {
+:global(html) {
   scroll-behavior: smooth;
 }
 </style>
